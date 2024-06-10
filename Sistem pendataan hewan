@@ -1,1 +1,128 @@
+import csv
 
+class Animal:
+    def __init__(self, name, species, age):
+        self.name = name
+        self.species = species
+        self.age = age
+
+class Zoo:
+    def __init__(self):
+        self.animal_list = []
+
+    def add_animal(self, name, species, age):
+        animal = Animal(name, species, age)
+        self.animal_list.append(animal)
+
+    def view_animals(self):
+        for animal in self.animal_list:
+            print(f"Name: {animal.name}, Species: {animal.species}, Age: {animal.age}")
+
+    def update_animal(self, name, species, age):
+        for animal in self.animal_list:
+            if animal.name == name:
+                animal.species = species
+                animal.age = age
+                break
+
+    def delete_animal(self, name):
+        for animal in self.animal_list:
+            if animal.name == name:
+                self.animal_list.remove(animal)
+                break
+
+    def sort_animals_by_name(self):
+        self.animal_list.sort(key=lambda x: x.name)
+
+    def sort_animals_by_species(self):
+        self.animal_list.sort(key=lambda x: x.species)
+
+    def search_animal_by_name(self, name):
+        for animal in self.animal_list:
+            if animal.name == name:
+                return animal
+        return None
+
+    def search_animal_by_species(self, species):
+        for animal in self.animal_list:
+            if animal.species == species:
+                return animal
+        return None
+
+    def import_data_csv(self, filename):
+        with open(filename, 'r') as file:
+            reader = csv.reader(file)
+            for row in reader:
+                self.add_animal(row[0], row[1], row[2])
+
+    def export_data_csv(self, filename):
+        with open(filename, 'w', newline='') as file:
+            writer = csv.writer(file)
+            for animal in self.animal_list:
+                writer.writerow([animal.name, animal.species, animal.age])
+
+def main():
+    zoo = Zoo()
+
+    while True:
+        print("Menu:")
+        print("1. Add Animal")
+        print("2. View Animals")
+        print("3. Update Animal")
+        print("4. Delete Animal")
+        print("5. Sort Animals by Name")
+        print("6. Sort Animals by Species")
+        print("7. Search Animal by Name")
+        print("8. Search Animal by Species")
+        print("9. Import Data from CSV")
+        print("10. Export Data to CSV")
+        print("11. Quit")
+
+        choice = input("Choose an option: ")
+
+        if choice == "1":
+            name = input("Enter animal name: ")
+            species = input("Enter animal species: ")
+            age = input("Enter animal age: ")
+            zoo.add_animal(name, species, age)
+        elif choice == "2":
+            zoo.view_animals()
+        elif choice == "3":
+            name = input("Enter animal name: ")
+            species = input("Enter new animal species: ")
+            age = input("Enter new animal age: ")
+            zoo.update_animal(name, species, age)
+        elif choice == "4":
+            name = input("Enter animal name: ")
+            zoo.delete_animal(name)
+        elif choice == "5":
+            zoo.sort_animals_by_name()
+        elif choice == "6":
+            zoo.sort_animals_by_species()
+        elif choice == "7":
+            name = input("Enter animal name: ")
+            animal = zoo.search_animal_by_name(name)
+            if animal:
+                print(f"Name: {animal.name}, Species: {animal.species}, Age: {animal.age}")
+            else:
+                print("Animal not found")
+        elif choice == "8":
+            species = input("Enter animal species: ")
+            animal = zoo.search_animal_by_species(species)
+            if animal:
+                print(f"Name: {animal.name}, Species: {animal.species}, Age: {animal.age}")
+            else:
+                print("Animal not found")
+        elif choice == "9":
+            filename = input("Enter CSV file name: ")
+            zoo.import_data_csv(filename)
+        elif choice == "10":
+            filename = input("Enter CSV file name: ")
+            zoo.export_data_csv(filename)
+        elif choice == "11":
+            break
+        else:
+            print("Invalid option")
+
+if __name__ == "__main__":
+    main()
