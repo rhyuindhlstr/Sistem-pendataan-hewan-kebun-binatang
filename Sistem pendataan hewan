@@ -66,9 +66,10 @@ class Zoo:
 
     def import_data_csv(self, filename):
         try:
-            with open(filename, 'r', newline='', encoding='utf-8') as file:
-                reader = csv.DictReader(file, delimiter=';', skipinitialspace=True)
-                for row in reader:
+            with open(filename, 'r', newline='') as csvfile:
+                reader = csv.DictReader(csvfile)
+                data = list(reader)
+                for row in data:
                     self.add_animal(row['Hewan'], row['Spesies'], row['Umur'])
             print("File successfully imported.")
         except FileNotFoundError:
@@ -146,5 +147,4 @@ def main():
         else:
             print("Invalid option. Please choose again.")
 
-if __name__ == "__main__":
-    main()
+main()
